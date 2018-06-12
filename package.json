@@ -1,0 +1,54 @@
+{
+  "name": "micro-fabric-ux",
+  "bundleDependencies": false,
+  "dependencies": {
+    "@polymer/app-layout": "^3.0.0-pre.12",
+    "@polymer/iron-icons": "^3.0.0-pre.12",
+    "@polymer/neon-animation": "^3.0.0-pre.12",
+    "@polymer/paper-button": "^3.0.0-pre.12",
+    "@polymer/paper-checkbox": "^3.0.0-pre.12",
+    "@polymer/paper-dialog": "^3.0.0-pre.12",
+    "@polymer/paper-drawer-panel": "^3.0.0-pre.12",
+    "@polymer/paper-icon-button": "^3.0.0-pre.12",
+    "@polymer/paper-input": "^3.0.0-pre.12",
+    "@polymer/paper-item": "^3.0.0-pre.12",
+    "@polymer/paper-listbox": "^3.0.0-pre.12",
+    "@polymer/paper-material": "^3.0.0-pre.12",
+    "@polymer/paper-menu-button": "^3.0.0-pre.12",
+    "@polymer/paper-tabs": "^3.0.0-pre.12",
+    "@polymer/polymer": "^3.0.0-pre.12",
+    "colors": "^1.1.2",
+    "fs-extra": "*",
+    "gulp": "*",
+    "nuid": "^0.6.14",
+    "polymer-build": "^3.0.0-pre.14",
+    "underscore": "^1.8.3",
+    "web-animations-js": "^2.3.1"
+  },
+  "deprecated": false,
+  "description": "µFabric Application Framework",
+  "engines": {
+    "node": "*",
+    "npm": "*"
+  },
+  "files": [
+    "micro-fabric-ux.js",
+    "polymer.json",
+    "modules",
+    "resources",
+    "LICENSE",
+    "README.md"
+  ],
+  "homepage": "https://github.com/aspectron/micro-fabric-ux",
+  "license": "Apache-2.0",
+  "main": "micro-fabric-ux",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aspectron/micro-fabric-ux.git"
+  },
+  "scripts": {
+    "prepublish": "npm prune"
+  },
+  "version": "0.0.1"
+}
