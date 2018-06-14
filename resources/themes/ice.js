@@ -3,7 +3,7 @@ const $_documentContainer = document.createElement('div');
 $_documentContainer.setAttribute('style', 'display: none;');
 $_documentContainer.innerHTML = `
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu|Exo+2|Oxygen:700|Open+Sans" />
-<dom-module id="i18n-style">
+<dom-module id="app-style">
 <template>
 <style include="iron-flex iron-flex-alignment">
 /*
@@ -21,6 +21,7 @@ html { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; font-size: 16
 html, body { margin: 0px; padding: 0px; min-height: 100%; color: #2d2d2d; background-color:rgba(255,255,255,0.01); font-family: 'Ubuntu', sans-serif; font-weight: 400; }
 body>*{background-color:#FFFFFF}
 body{border-radius:10px;border:1px solid #DDD}
+.body-last-child{border-bottom-left-radius:10px;border-bottom-right-radius:10px;}
 section { padding: 40px 0px; }
 section[hero] { background-color: #f3f3f3; }
 
