@@ -184,4 +184,4 @@ paper-tab:focus::shadow .tab-content{font-weight:500 !important;}
 </dom-module>
 `;
 
-document.body.appendChild($_documentContainer);
+document.head.appendChild($_documentContainer);
