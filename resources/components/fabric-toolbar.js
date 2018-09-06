@@ -91,17 +91,16 @@ class FabricToolbar extends FabricElement(PolymerElement) {
   }
 
   initEvents(){
-    var $el = $(this);
     var win = require('nw.gui').Window.get();
     this.win = win;
-    win.on("maximize", function(){
-      $el.toggleClass("maximized", true)
+    win.on("maximize", ()=>{
+      this.classList.toggle("maximized", true)
     })
-    win.on("unmaximize", function(){
-      $el.toggleClass("maximized", false)
+    win.on("unmaximize", ()=>{
+      this.classList.toggle("maximized", false)
     })
-    win.on("restore", function(){
-      $el.toggleClass("maximized", false)
+    win.on("restore", ()=>{
+      this.classList.toggle("maximized", false)
     })
   }
   winClose(){

@@ -5,6 +5,10 @@
 		"modules/**/*.png",
 		"modules/**/*.jpg"
 	],
+	"extraDependencies":[
+		"node_modules/@polymer/**/*.js",
+		"resources/components/*.js"
+	],
 	"build": [{
 		"name": "compiled",
 		"bundle": {

@@ -29,7 +29,13 @@ const polymerBuild = require('polymer-build');
 //const swPrecacheConfig = require('./sw-precache-config.js');
 const polymerJson = require('./polymer.json');
 const polymerProject = new polymerBuild.PolymerProject(polymerJson);
-const buildDirectory = '../../@BUILD';
+var buildDirectory = '../../@BUILD';
+var argv = process.argv;
+if(argv.indexOf("--build-dir") > 0){
+  buildDirectory = argv[argv.indexOf("--build-dir")+1];
+  console.log("Using BuildDirectory", buildDirectory)
+  //process.exit(1);
+}
 
 /**
  * Waits for the given ReadableStream
