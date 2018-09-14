@@ -44,7 +44,7 @@ var FabricElement = (superClass) => class extends superClass{
 	}
 
 	fire(eventName, detail) {
-		this.dispatchEvent(new CustomEvent('toggle-drawer', {detail: detail || {} }));
+		this.dispatchEvent(new CustomEvent(eventName, {detail: detail || {} }));
 	}
 
 	toggleClass(cls, toggle, el){
