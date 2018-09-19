@@ -221,6 +221,9 @@ Polymer({
 				padding: 4px 6px 4px 6px; font-size: 14px; white-space: nowrap;
 				@apply --fabric-field-wrapper;
 			}
+			.dropdown-trigger{
+				@apply --fabric-field-trigger;
+			}
 			.title { font-size: 14px; @apply --fabric-field-title;}
 			.value { color: #025975; @apply --fabric-field-value;}
 			.suffix { color: #025975; padding-left:5px; @apply --fabric-field-suffix;}
