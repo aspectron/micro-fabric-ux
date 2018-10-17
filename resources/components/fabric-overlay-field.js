@@ -51,7 +51,7 @@ class FabricOverlayField extends FabricElement(PolymerElement) {
 	static get template() {
     	return html`
 			<style include="fabric-style paper-material-styles">
-				:host {display: inline-block;position: relative;padding-bottom: 2px;}
+				:host {display:inline-block;position:relative;padding-bottom:2px;@apply --fabric-overlay-field;}
 				:host([block]){display: block;}
 				.tigger{min-height: 20px; min-width: 30px; cursor: pointer;
 					@apply --fabric-overlay-field-tigger;
