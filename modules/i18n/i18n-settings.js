@@ -15,7 +15,7 @@ $_documentContainer.innerHTML = `
 	<template>
 	<style include="paper-dialog-shared-styles i18n-style">
 		:host{height:90%;min-width:300px;@apply(--layout-vertical);}
-		#pages{padding-left:0px;padding-right:0px;margin-right:24px;margin-left:24px;}
+		#pages{padding-left:0px;padding-right:0px;margin-right:24px;margin-left:24px;@apply --i18n-settings-pages}
 		neon-animatable{overflow:auto;}
 		.lang{position:relative;cursor:pointer;}
 		.lang:hover{background-color:#EEE}

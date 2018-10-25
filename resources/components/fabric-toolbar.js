@@ -15,7 +15,7 @@ class FabricToolbar extends FabricElement(PolymerElement) {
 
   static get template() {
     return html`
-      <style>
+      <style include="fabric-style iron-flex">
 
         :host {
           @apply --layout-horizontal;
@@ -62,6 +62,7 @@ class FabricToolbar extends FabricElement(PolymerElement) {
         }
         
         :host paper-icon-button{
+          @apply --fabric-toolbar-buttons;
           --iron-icon:{
             display:block;
           }
