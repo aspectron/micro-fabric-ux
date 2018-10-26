@@ -51,12 +51,13 @@ class FabricOverlayField extends FabricElement(PolymerElement) {
 	static get template() {
     	return html`
 			<style include="fabric-style paper-material-styles">
-				:host {display:inline-block;position:relative;padding-bottom:2px;@apply --fabric-overlay-field;}
+				:host {display: inline-block;position: relative;padding-bottom: 2px;}
 				:host([block]){display: block;}
 				.tigger{min-height: 20px; min-width: 30px; cursor: pointer;
 					@apply --fabric-overlay-field-tigger;
 				}
 				.tigger[disabled]{cursor:default;}
+				.spinner-slot{cursor: default;}
 				#dropdown{display:block;}
 				#dropdown .dropdown-content{
 					background:#FFF;max-width:none !important;
@@ -64,8 +65,9 @@ class FabricOverlayField extends FabricElement(PolymerElement) {
 					@apply --paper-material-elevation-3;
 				}
 			</style>
-			<div class="tigger" on-tap="open" id="trigger" disabled$="[[disabled]]">
-				<slot name="dropdown-trigger"></slot>
+			<div class="tigger"  id="trigger" disabled$="[[disabled]]">
+				<slot name="spinner-slot" class="spinner-slot"></slot>
+				<slot name="dropdown-trigger" on-tap="open"></slot>
 			</div>
 			<iron-dropdown id="dropdown"
 				vertical-align="[[verticalAlign]]"

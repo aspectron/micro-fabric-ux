@@ -203,6 +203,7 @@ Polymer({
 		showUnits : { type : Boolean, value : false },
 		rpc: Object,
 		localSave:Boolean,
+		spinner: { type : Boolean, value : false },
 		nAValue:{type: String, value: "N/A"},
 		horizontalOffset:{type:Number, value:0},
 		titleWidthAsHOffset:Boolean
@@ -251,14 +252,51 @@ Polymer({
 					padding:0px 5px;
 				}
 			}
+			#spinnerContainer
+            {
+                display: inline-block;
+                width: 1.4em;
+                height: 1.4em;
+                padding:0;
+                margin:0;
+                vertical-align: middle;
+                min-height: 24px;
+            }
+            #incButton, #decButton
+            {
+                min-height: 12px;
+                font-size: 40%;
+                display: block;
+                width: 100%;
+                height: 49%;
+                padding:0;
+                margin:0;
+                cursor: pointer;
+            }
 		</style>
 		<div class='wrapper' is-editable$="[[_isEditable(editable)]]">
 			<fabric-overlay-field horizontal-align="[[editorHAlign]]" horizontal-offset="[[horizontalOffset]]" id="editor" disabled$="[[_isDisabled(editable)]]">
-				<span slot="dropdown-trigger" class="dropdown-trigger">
-					<span id="title" class='title'>[[title]]<span>[[titleSuffix]]</span></span>
-					<span class='value'>[[_V(value)]]</span><span class="units" hidden$="[[!showUnits]]">[[_getUnits(format)]]</span><span class="suffix" hidden$="[[!suffix]]">[[suffix]]</span>
-					<iron-icon icon="arrow-drop-down" hidden$="[[!editable]]"></iron-icon>
-				</span>
+				<template is="dom-if" if="{{spinner}}">
+					<span slot="spinner-slot">
+						<span id="title" class='title'>[[title]]<span>[[titleSuffix]]</span></span>
+						 <div id="spinnerContainer">
+							<button on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="incButton" data-spin="up">&#9650;</button>
+							<button on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="decButton" data-spin="down">&#9660;</button>
+						</div>
+					</span>
+					<span slot="dropdown-trigger" class="dropdown-trigger">
+						<span class='value'>[[_V(value)]]</span><span class="units" hidden$="[[!showUnits]]">[[_getUnits(format)]]</span><span class="suffix" hidden$="[[!suffix]]">[[suffix]]</span>
+						<iron-icon slot="aaaa-aaa" icon="arrow-drop-down" hidden$="[[!editable]]"></iron-icon>
+					</span>
+				</template>
+				
+				<template is="dom-if" if="{{!spinner}}">
+					<span slot="dropdown-trigger" class="dropdown-trigger">
+						<span id="title" class='title'>[[title]]<span>[[titleSuffix]]</span></span>
+						<span class='value'>[[_V(value)]]</span><span class="units" hidden$="[[!showUnits]]">[[_getUnits(format)]]</span><span class="suffix" hidden$="[[!suffix]]">[[suffix]]</span>
+						<iron-icon slot="aaaa-aaa" icon="arrow-drop-down" hidden$="[[!editable]]"></iron-icon>
+					</span>
+				</template>
 				<template is="dom-if" if="[[_isBoolField(format, type)]]">
 					<div slot="dropdown-content" class="dropdown-content bg-color no-overflow">
 						<paper-radio-group selected="{{_value}}" attr-for-selected="value">
@@ -326,6 +364,22 @@ Polymer({
 			})
 
 			this.set("_radio", radio);
+		}
+	},
+	onSpinerMouseDown: function ( e ) {
+
+		var spin = $( e.target ).attr( "data-spin" );
+		this.spinnerInterval = setInterval( () => {
+
+				this.fire("spinner-change", { spin: spin } )
+
+		}, 100 );
+	},
+	onSpinerMouseUp: function () {
+
+		// console.log( this.spinnerInterval )
+		if( this.spinnerInterval ) {
+			clearInterval( this.spinnerInterval );
 		}
 	},
 	onValueChanged: function(){
