@@ -16,7 +16,9 @@ $_documentContainer.innerHTML = `
 			.astab{padding: 10px; width: auto !important;}
 			.astab .display{border-bottom: 0px;}
 			.astab::content #dropdown{margin-top: 48px !important; margin-left:5px; margin-right: 5px; min-width: 140px;}
-			paper-item{cursor: pointer;}
+			.dropdown-content{@apply --fabric-i18n-language-selector-items}
+			paper-item{cursor: pointer;@apply --fabric-i18n-language-selector-item}
+			paper-item:hover{@apply --fabric-i18n-language-selector-item-hover}
 		</style>
 		<paper-menu-button class="astab" horizontal-align="[[hAlign]]">
 			<div slot="dropdown-trigger" class="dropdown-trigger display">
@@ -45,7 +47,6 @@ Polymer({
 		selected:{
 			type: String,
 			notify: true,
-			value: i18n.locale,
 			observer:'onLangChange'
 		},
 		language:{
@@ -62,12 +63,21 @@ Polymer({
 		'onLangChange(language.list, language.locale)'
 	],
 	ready: function(){
-		var self = this;
+		document.body.addEventListener("fabric-i18n-init", (e)=>{
+			console.log("fabric-i18n-init", e)
+			this.init(e.detail.i18n)
+		});
+
+		if(window.i18n)
+			this.init(window.i18n);
+	},
+	init: function(i18n){
+		this.i18n = i18n;
 		var langs = []; 
-		_.each(i18n.languages, function(name, code){
+		_.each(i18n.languages, (name, code)=>{
 			langs.push({name, id: code});
 		});
-		self.set('language', {
+		this.set('language', {
 			source: i18n.source,
 			locale: i18n.locale,
 			list: langs
@@ -79,33 +89,24 @@ Polymer({
 		this.set('selected', locale);
 	},
 	attached: function(){
-		var self = this;
-		if (!self.language || !self.language.list || !self.language.list.length)
+		if (!this.language || !this.language.list || !this.language.list.length)
 			return;
-		var list = [].concat(self.language.list);
-		self.set('language.list', []);
-		self.async(function(){
-			self.set('language.list', list);
+		var list = [].concat(this.language.list);
+		this.set('language.list', []);
+		this.async(()=>{
+			this.set('language.list', list);
 		}, 1000);
 	},
 	onLangChange: function(){
-		var self = this;
-		if (!self.language || !self.language.list.length || !self.selected)
+		if (!this.language || !this.language.list.length || !this.selected)
 			return;
-		var l = _.find(self.language.list, function(o){return o.id == self.selected});
+		var l = _.find(this.language.list, (o)=>{return o.id == this.selected});
 		if (!l)
-			return (self.languagetitle = self.selected);
-		self.languagetitle = l.name;
+			return (this.languagetitle = this.selected);
+		this.languagetitle = l.name;
 
-		if (self.language.locale != self.selected) {
-			i18n.setLocale(self.selected);
-			/*var loc = window.location;
-			if (self.language.locale == 'en') {
-				window.location.href = loc.href.replace(loc.host+'/', loc.host+'/'+self.selected+'/');
-			}else{
-				window.location.href = loc.href.replace(loc.host+'/'+self.language.locale, loc.host+'/'+self.selected);
-			}*/
-		};
+		if (this.language.locale != this.selected && this.i18n)
+			this.i18n.setLocale(this.selected);
 	},
 	toJSON: function(v){
 		return JSON.stringify(v);

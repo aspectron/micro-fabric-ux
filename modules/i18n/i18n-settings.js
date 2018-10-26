@@ -25,7 +25,7 @@ $_documentContainer.innerHTML = `
 	</style>
 		<paper-tabs selected="{{selected}}" attr-for-selected="page">
 			<paper-tab page="editorTab">EDITOR LANGUAGES</paper-tab>
-			<paper-tab page="siteTab" hidden$="[[!config.isAdmin]]">SITE LANGUAGES</paper-tab>
+			<paper-tab page="siteTab" hidden$="[[!config.isAdmin]]">APP LANGUAGES</paper-tab>
 		</paper-tabs>
 		<neon-animated-pages class="flex" id="pages" selected="[[selected]]" entry-animation="fade-in-animation" exit-animation="fade-out-animation" attr-for-selected="page">
 			<neon-animatable page="editorTab">
@@ -36,7 +36,7 @@ $_documentContainer.innerHTML = `
 				</iron-selector>
 			</neon-animatable>
 			<neon-animatable page="siteTab">
-				<iron-selector selected="{{siteLanguages}}" multi attr-for-selected="ident">
+				<iron-selector selected="{{appLanguages}}" multi attr-for-selected="ident">
 					<template is="dom-repeat" items="[[languages]]">
 						<paper-item class="lang" ident="[[item.ident]]">[[item.name]]<span>[[item.ident]]</span></paper-item>
 					</template>
@@ -56,8 +56,16 @@ Polymer({
 			type: String,
 			value: "editorTab"
 		},
-		editorLanguages:{type: Array, notify: true, value:[]},
-		siteLanguages: Array,
+		editorLanguages:{
+			type: Array,
+			notify: true,
+			value:[]
+		},
+		appLanguages: {
+			type: Array,
+			notify: true,
+			value:[]
+		},
 		config:{
 			type: Object,
 			observer: "onConfigUpdate"

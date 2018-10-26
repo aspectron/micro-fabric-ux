@@ -10,7 +10,7 @@ $_documentContainer.innerHTML = `
 		<style>
 			:host{min-width: 200px;display: block;padding: 5px;border-bottom: 1px solid #ddd;}
 			:host(.has-missing){background-color: rgba(255, 0, 0, 0.05);}
-			:host(.iron-selected){background-color: #e0ecff; border: 1px solid #000; padding: 4px 4px 5px 4px;}
+			:host(.iron-selected){background-color:#5e98f8;padding: 4px 4px 5px 4px;}
 			.locale{min-height:18px;text-transform:uppercase;margin-top:2px;}
 			.locale .mis{background-color: #fa2352;color: #FFF;padding: 1px 2px;font-size: 10px;margin-right:2px;}
 			.locale .exist{border:1px solid rgba(204, 204, 204, 0.4);padding:1px 2px;font-size:10px;margin-right:2px;margin-top:2px;display:inline-block;}
