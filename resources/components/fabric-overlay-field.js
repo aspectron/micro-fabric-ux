@@ -53,7 +53,11 @@ class FabricOverlayField extends FabricElement(PolymerElement) {
 			<style include="fabric-style paper-material-styles">
 				:host {display: inline-block;position: relative;padding-bottom: 2px;}
 				:host([block]){display: block;}
-				.tigger{min-height: 20px; min-width: 30px; cursor: pointer;
+				.tigger{
+					min-height: 20px;
+					min-width: 30px;
+					cursor: pointer;
+					@apply --layout-horizontal;
 					@apply --fabric-overlay-field-tigger;
 				}
 				.tigger[disabled]{cursor:default;}

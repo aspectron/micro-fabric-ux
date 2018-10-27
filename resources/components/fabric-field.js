@@ -1,4 +1,5 @@
 import "@polymer/paper-input/paper-input.js";
+import "@polymer/paper-button/paper-button.js";
 import "@polymer/paper-icon-button/paper-icon-button.js";
 import "@polymer/paper-radio-group/paper-radio-group.js";
 import "@polymer/iron-icon/iron-icon.js";
@@ -223,6 +224,8 @@ Polymer({
 				@apply --fabric-field-wrapper;
 			}
 			.dropdown-trigger{
+				@apply --layout-horizontal;
+				@apply --layout-center;
 				@apply --fabric-field-trigger;
 			}
 			.title { font-size: 14px; @apply --fabric-field-title;}
@@ -252,36 +255,46 @@ Polymer({
 					padding:0px 5px;
 				}
 			}
-			#spinnerContainer
-            {
-                display: inline-block;
+			.spinner-slot{
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --fabric-field-spinner-slot;
+			}
+			#spinnerContainer{
+                @apply --layout-vertical;
                 width: 1.4em;
-                height: 1.4em;
+                height: 100%;
                 padding:0;
                 margin:0;
                 vertical-align: middle;
                 min-height: 24px;
+                margin-right:5px;
+                @apply --fabric-field-spinners;
             }
-            #incButton, #decButton
-            {
-                min-height: 12px;
-                font-size: 40%;
-                display: block;
-                width: 100%;
-                height: 49%;
+            #incButton,
+            #decButton{
+                min-height:12px;
+                font-size:60%;
                 padding:0;
                 margin:0;
-                cursor: pointer;
+                cursor:pointer;
+                min-width:0px;
+                text-align:center;
+                background-color:#ddd;
+                border-radius:0px;
+                @apply --layout-horizontal;
+                @apply --layout-flex;
+                @apply --fabric-field-spinner;
             }
 		</style>
 		<div class='wrapper' is-editable$="[[_isEditable(editable)]]">
 			<fabric-overlay-field horizontal-align="[[editorHAlign]]" horizontal-offset="[[horizontalOffset]]" id="editor" disabled$="[[_isDisabled(editable)]]">
 				<template is="dom-if" if="{{spinner}}">
-					<span slot="spinner-slot">
+					<span class="spinner-slot" slot="spinner-slot">
 						<span id="title" class='title'>[[title]]<span>[[titleSuffix]]</span></span>
 						 <div id="spinnerContainer">
-							<button on-mouseleave="onSpinerMouseUp" on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="incButton" data-spin="up">&#9650;</button>
-							<button on-mouseleave="onSpinerMouseUp" on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="decButton" data-spin="down">&#9660;</button>
+							<paper-button on-mouseleave="onSpinerMouseUp" on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="incButton" data-spin="up">&#9650;</paper-button>
+							<paper-button on-mouseleave="onSpinerMouseUp" on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="decButton" data-spin="down">&#9660;</paper-button>
 						</div>
 					</span>
 					<span slot="dropdown-trigger" class="dropdown-trigger">
