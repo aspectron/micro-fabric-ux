@@ -280,8 +280,8 @@ Polymer({
 					<span slot="spinner-slot">
 						<span id="title" class='title'>[[title]]<span>[[titleSuffix]]</span></span>
 						 <div id="spinnerContainer">
-							<button on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="incButton" data-spin="up">&#9650;</button>
-							<button on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="decButton" data-spin="down">&#9660;</button>
+							<button on-mouseleave="onSpinerMouseUp" on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="incButton" data-spin="up">&#9650;</button>
+							<button on-mouseleave="onSpinerMouseUp" on-mouseup="onSpinerMouseUp" on-mousedown="onSpinerMouseDown" id="decButton" data-spin="down">&#9660;</button>
 						</div>
 					</span>
 					<span slot="dropdown-trigger" class="dropdown-trigger">
