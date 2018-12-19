@@ -1,5 +1,8 @@
 import "@polymer/paper-input/paper-input.js";
 import "@polymer/paper-button/paper-button.js";
+import "@polymer/paper-input/paper-textarea.js";
+import "@polymer/paper-listbox/paper-listbox.js";
+import "@polymer/paper-item/paper-item.js";
 import "@polymer/paper-icon-button/paper-icon-button.js";
 import "@polymer/paper-radio-group/paper-radio-group.js";
 import "@polymer/iron-icon/iron-icon.js";
@@ -207,7 +210,10 @@ Polymer({
 		spinner: { type : Boolean, value : false },
 		nAValue:{type: String, value: "N/A"},
 		horizontalOffset:{type:Number, value:0},
-		titleWidthAsHOffset:Boolean
+		titleWidthAsHOffset:Boolean,
+		fieldItems:{type:Array, value:[]},
+		textareaRows:{type:Number, value:2},
+		adjustRightEdge:{type:Boolean}
 	},
 	observers:["onValueChanged(value)"],
 	behaviors: [FabricI18n],
@@ -286,9 +292,62 @@ Polymer({
                 @apply --layout-flex;
                 @apply --fabric-field-spinner;
             }
+            #######
+            #######
+            #######
+            .h-box{@apply --layout-horizontal;}
+            .flex{@apply --layout-flex;}
+            .select-box-outer{
+            	max-height:300px;
+            	@apply --layout-vertical;
+            	@apply --fabric-field-select-box-outer;
+            }
+            .select-box{
+            	overflow: auto;
+            	max-height:200px;
+            	@apply --fabric-field-select-box;
+            }
+            .select-box paper-item{cursor:pointer;@apply --fabric-field-select-box-item;}
+            .select-box-btns{
+            	border-top:1px solid #DDD;
+            	@apply --layout-horizontal;
+            	@apply --fabric-field-select-box-btns;
+            }
+            .textarea-outer{
+            	max-height:300px;
+            	max-width:400px;
+            	min-width:250px;
+            	@apply --layout-vertical;
+            	@apply --fabric-field-textarea-outer;
+            }
+            .textarea-box{
+            	overflow-x:hidden;
+            	overflow-y: auto;
+            	max-height:300px;
+            	@apply --fabric-field-textarea-box;
+            }
+            .textarea-btns{
+            	border-top:1px solid #DDD;
+            	@apply --layout-horizontal;
+            	@apply --fabric-field-select-box-btns;
+            }
+            .textarea-box{
+            	--paper-input-container-input:{
+	            	padding:0px;
+	            }
+	            --iron-autogrow-textarea:{
+	            	box-sizing:border-box;
+	            	padding:5px;
+	            }
+            }
+            [is-select-field]{
+            	--fabric-overlay-field-dropdown-content:{
+            		max-height:300px !important;
+            	}
+            }
 		</style>
-		<div class='wrapper' is-editable$="[[_isEditable(editable)]]">
-			<fabric-overlay-field horizontal-align="[[editorHAlign]]" horizontal-offset="[[horizontalOffset]]" id="editor" disabled$="[[_isDisabled(editable)]]">
+		<div class='wrapper' is-editable$="[[_isEditable(editable)]]" is-select-field$="[[_isSelectField(format, type)]]">
+			<fabric-overlay-field adjust-right-edge="[[adjustRightEdge]]" horizontal-align="[[editorHAlign]]" horizontal-offset="[[horizontalOffset]]" id="editor" disabled$="[[_isDisabled(editable)]]">
 				<template is="dom-if" if="{{spinner}}">
 					<span class="spinner-slot" slot="spinner-slot">
 						<span id="title" class='title'>[[title]]<span>[[titleSuffix]]</span></span>
@@ -329,6 +388,33 @@ Polymer({
 						</paper-radio-group>
 						<paper-icon-button icon="close" slot="suffix" close on-click="cancelSetting"></paper-icon-button>
 						<paper-icon-button icon="done" slot="suffix" on-click="saveSetting"></paper-icon-button>
+					</div>
+				</template>
+				<template is="dom-if" if="[[_isSelectField(format, type)]]">
+					<div slot="dropdown-content" class="dropdown-content bg-color no-overflow">
+						<div class="select-box-outer">
+							<paper-listbox class="select-box" multi="[[_isMultiSelectField(format, type)]]" selected="{{_value}}" attr-for-selected="value">
+								<template is="dom-repeat" items="[[fieldItems]]">
+									<paper-item value="[[item.value]]">[[item.text]]</paper-item>
+								</template>
+							</paper-listbox>
+							<div class="select-box-btns">
+								<paper-icon-button icon="close" slot="suffix" close on-click="cancelSetting"></paper-icon-button>
+								<paper-icon-button icon="done" slot="suffix" on-click="saveSetting"></paper-icon-button>
+							</div>
+						</div>
+					</div>
+				</template>
+				<template is="dom-if" if="[[_isTextareaField(format, type)]]">
+					<div slot="dropdown-content" class="dropdown-content bg-color no-overflow">
+						<div class="textarea-outer">
+							<paper-textarea no-label-float="true" class="textarea-box" value="{{_value}}" rows="[[textareaRows]]">
+							</paper-textarea>
+							<div class="textarea-btns">
+								<paper-icon-button icon="close" slot="suffix" close on-click="cancelSetting"></paper-icon-button>
+								<paper-icon-button icon="done" slot="suffix" on-click="saveSetting"></paper-icon-button>
+							</div>
+						</div>
 					</div>
 				</template>
 				<template is="dom-if" if="[[_isEditField(format, type)]]">
@@ -418,8 +504,18 @@ Polymer({
 	_isRadioField: function(format) {
 		return this.format == "radio";
 	},
+	_isSelectField:function(format, type){
+		return this.type == "multi-select" || this.type == "select";
+	},
+	_isMultiSelectField:function(format, type){
+		return this.type == "multi-select";
+	},
+	_isTextareaField:function(format, type){
+		return this.type == "multi-line";
+	},
 	_isEditField : function(format, type) {
-		return !this._isBoolField(format, type) && !this._isRadioField(format);
+		return !this._isTextareaField() && !this._isSelectField(format, type) &&
+			!this._isBoolField(format, type) && !this._isRadioField(format);
 	},
 	_isFileSize: function(){
 		var f = (this.format || "").toLowerCase();
@@ -586,19 +682,16 @@ Polymer({
 			this.hideError();
 	},
 	showError: function(err) {
-		if(!this._isEditField()) {
-			Fabric.Alert({title: this._T("Error"), text: err })
-		}
-		else {
+		if(this._isEditField()) {
 			this.set("errorState",true);
 			this.set("_title",err);
 			this.root.querySelector("#paper").toggleClass("editor-error", true);
+		}else{
+			Fabric.Alert({title: this._T("Error"), text: err })
 		}
 	},
 	hideError: function(err) {
-		if(!this._isEditField()) {
-		}
-		else {				
+		if(this._isEditField()) {
 			this.set("errorState",false);
 			this.set("_title",this.title);
 			this.root.querySelector("#paper").toggleClass("editor-error", false);
