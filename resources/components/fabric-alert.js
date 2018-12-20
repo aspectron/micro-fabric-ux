@@ -3,6 +3,8 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-dialog/paper-dialog.js';
+import "@polymer/paper-listbox/paper-listbox.js";
+import "@polymer/paper-item/paper-item.js";
 
 
 window.Fabric = window.Fabric || {};
@@ -21,9 +23,10 @@ window.Fabric.Prompt = function(args, callback){
 		okBtn: 'OK',
 		closeBtn: 'CLOSE',
 		closeBtnCls: "",
-		okBtnCls: "",
+		okBtnCls: "success",
 		cls: "",
 		fieldType: 'text',
+		fieldItems: [],
 		required: true,
 		isprompt: true,
 		hasCloseBtn: true,
@@ -38,7 +41,7 @@ window.Fabric.Alert = function(args, callback){
 		okBtn: 'OK',
 		closeBtn: 'CLOSE',
 		closeBtnCls: "",
-		okBtnCls: "",
+		okBtnCls: "success",
 		cls: "",
 		isprompt: false,
 		required: false,
@@ -55,7 +58,7 @@ window.Fabric.Confirm = function(args, callback){
 		okBtn: 'OK',
 		closeBtn: 'CANCEL',
 		closeBtnCls: "",
-		okBtnCls: "",
+		okBtnCls: "success",
 		cls: "",
 		isprompt: false,
 		required: false,
@@ -78,6 +81,7 @@ Polymer({
 				okBtn: 'OK',
 				closeBtn: 'CLOSE',
 				fieldType: 'text',
+				fieldItems: [],
 				required: true,
 				isprompt: true,
 				hasCloseBtn: true,
@@ -94,18 +98,30 @@ Polymer({
 		<style include="fabric-style">
 			#dialodBox{@apply --fabric-alert-dialog}
 			.field{width:100%; min-width:200px;margin-bottom:10px;@apply --fabric-alert-field;}
-			paper-button.danger{background-color:var(--paper-red-400, #F00); color:#FFF;}
-			paper-button.success{background-color:var(--paper-green-400, #F00); color:#FFF;}
-			paper-button.warning{background-color:var(--paper-orange-400, #F00); color:#FFF;}
+			paper-button.danger{background-color:var(--paper-red-400, #F00); color:#FFF;@apply --fabric-alert-danger-btn;}
+			paper-button.success{background-color:var(--paper-green-400, #F00); color:#FFF;@apply --fabric-alert-success-btn;}
+			paper-button.warning{background-color:var(--paper-orange-400, #F00); color:#FFF;@apply --fabric-alert-warning-btn;}
 			[notitle]>.text{padding-top:25px;margin-top: 0px;@apply --fabric-alert-text;}
 			.buttons{margin-top:20px;@apply --fabric-alert-buttons;}
 			.title{padding:0px 15px;@apply --fabric-alert-title;}
+			paper-listbox{border:1px solid #DEDEDE;@apply --fabric-alert-items;}
+			paper-item{cursor:pointer;@apply --fabric-alert-item;}
+			paper-item:hover{background-color:#DEDEDE;@apply --fabric-alert-item-hover;}
 		</style>
 		<paper-dialog id="dialodBox" modal class$="[[data.cls]]" notitle$="[[!data.title]]" notext$="[[!data.text]]">
 			<h2 class="title" hidden$="[[!data.title]]">[[data.title]]</h2>
 			<div class="text" hidden$="[[!data.text]]" id="textEl"></div>
 			<div class="dialog-contents" hidden$="[[!data.isprompt]]">
-				<paper-input class="field" type="[[data.fieldType]]" no-float-label value="{{data.value}}" on-keyup="onkeyup"></paper-input>
+				<template is="dom-if" if="[[_isTextInput(data.fieldType)]]">
+					<paper-input class="field" type="[[data.fieldType]]" no-float-label value="{{data.value}}" on-keyup="onkeyup"></paper-input>
+				</template>
+				<template is="dom-if" if="[[_isSelectInput(data.fieldType)]]">
+					<paper-listbox class="select-box" multi="[[_isMultiSelectField(data.fieldType)]]" selected="{{data.value}}" attr-for-selected="value">
+						<template is="dom-repeat" items="[[data.fieldItems]]">
+							<paper-item value="[[item.value]]">[[item.text]]</paper-item>
+						</template>
+					</paper-listbox>
+				</template>
 			</div>
 			<div class="buttons">
 				<paper-button on-tap="cancel" class$="[[data.closeBtnCls]]" dialog-dismiss raised hidden$="[[!data.hasCloseBtn]]">[[data.closeBtn]]</paper-button>
@@ -113,6 +129,15 @@ Polymer({
 			</div>
 		</paper-dialog>
 	`,
+	_isSelectInput:function(){
+		return this.data.fieldType == "multi-select" || this.data.fieldType == "select";
+	},
+	_isMultiSelectField:function(){
+		return this.data.fieldType == "multi-select";
+	},
+	_isTextInput:function(){
+		return this.data.fieldType == "text";
+	},
 	onTextChanged: function(){
 		this.$.textEl.innerHTML =  this.data.text || "";
 	},

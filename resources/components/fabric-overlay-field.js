@@ -12,6 +12,7 @@ class FabricOverlayField extends FabricElement(PolymerElement) {
 			verticalOffset:{type:Number, value:10},
 			horizontalOffset:{type:Number, value:0},
 			disabled: Boolean,
+			adjustRightEdge:Boolean,
 			openAnimationConfig: {
 				type: Array,
 				value: function() {
@@ -67,6 +68,7 @@ class FabricOverlayField extends FabricElement(PolymerElement) {
 					background:#FFF;max-width:none !important;
 					max-height: 200px !important;
 					@apply --paper-material-elevation-3;
+					@apply --fabric-overlay-field-dropdown-content;
 				}
 			</style>
 			<div class="tigger"  id="trigger" disabled$="[[disabled]]">
@@ -116,14 +118,17 @@ class FabricOverlayField extends FabricElement(PolymerElement) {
 		});
 		var dc = this.$.dropdown.querySelector(".dropdown-content");
 		var dropdownBox = dc.getBoundingClientRect();
-		var maxRight = window.innerWidth;
-		/*
-		var right = this.$.dropdown.getBoundingClientRect().left + dropdownBox.width;
-		if (right > maxRight -10)
-			this.$.dropdown.horizontalOffset = maxRight - right - 10;
-		else
-			this.$.dropdown.horizontalOffset = this.horizontalOffset;
-		*/
+
+		if(this.adjustRightEdge){
+			var maxRight = window.innerWidth-20;
+			var right = this.$.dropdown.getBoundingClientRect().left + dropdownBox.width - this.$.dropdown.horizontalOffset;
+			//console.log("right:"+right, "maxRight:"+maxRight+", (maxRight - right):"+(maxRight - right))
+			if (right > maxRight || right == maxRight)
+				this.$.dropdown.horizontalOffset = maxRight - right;
+			else
+				this.$.dropdown.horizontalOffset = this.horizontalOffset;
+		}
+		
 		
 		this.constructor.setCss(this.$.dropdown, {
 			marginLeft: 0,
