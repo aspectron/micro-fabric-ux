@@ -749,6 +749,10 @@ Polymer({
 
 		if(this.processBeforeSave)
 			value = this.processBeforeSave(value, this.editable, this)
+		if(this.checkBeforeSave && !this.checkBeforeSave(value, this.value)){
+			this.$.editor.close();
+			return
+		}
 
 		if(this.localSave){
 			this.set("value", value);
@@ -764,7 +768,7 @@ Polymer({
 			name: this.editable,
 			value: value
 		}, (err, r)=>{
-			//console.log(arguments);
+			//console.log("arguments", r);
 			this.$.editor.toggleClass("saving", false);
 
 			if(err) {
