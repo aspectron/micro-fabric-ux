@@ -195,6 +195,7 @@ Polymer({
 		precision : { type : Number, value : null },
 		type : { type : String, value : null, observer:"onTypeChanged"},
 		format : { type : String, value : null },
+		inputType:{type: String, value:"text"},
 		zeroDefault : { type : String },
 		op: {type: String, value: "setting"},
 		boolText:{type:String, value:"True/False"},
@@ -429,6 +430,7 @@ Polymer({
 						no-label-float$="[[!errorState]]"
 						on-keydown="checkForEnter"
 						floatingLabel$="[[errorState]]"
+						type="[[inputType]]"
 						>
 						<paper-icon-button icon="close" slot="suffix" close on-click="cancelSetting"></paper-icon-button>
 						<paper-icon-button icon="done" slot="suffix" on-click="saveSetting"></paper-icon-button>
