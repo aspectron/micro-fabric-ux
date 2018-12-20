@@ -214,7 +214,8 @@ Polymer({
 		titleWidthAsHOffset:Boolean,
 		fieldItems:{type:Array, value:[]},
 		textareaRows:{type:Number, value:2},
-		adjustRightEdge:{type:Boolean}
+		adjustRightEdge:{type:Boolean},
+		skipAutoFocus:{type:Boolean}
 	},
 	observers:["onValueChanged(value)"],
 	behaviors: [FabricI18n],
@@ -348,7 +349,7 @@ Polymer({
             }
 		</style>
 		<div class='wrapper' is-editable$="[[_isEditable(editable)]]" is-select-field$="[[_isSelectField(format, type)]]">
-			<fabric-overlay-field adjust-right-edge="[[adjustRightEdge]]" horizontal-align="[[editorHAlign]]" horizontal-offset="[[horizontalOffset]]" id="editor" disabled$="[[_isDisabled(editable)]]">
+			<fabric-overlay-field on-iron-overlay-opened="onOverlayOpened" adjust-right-edge="[[adjustRightEdge]]" horizontal-align="[[editorHAlign]]" horizontal-offset="[[horizontalOffset]]" id="editor" disabled$="[[_isDisabled(editable)]]">
 				<template is="dom-if" if="{{spinner}}">
 					<span class="spinner-slot" slot="spinner-slot">
 						<span id="title" class='title'>[[title]]<span>[[titleSuffix]]</span></span>
@@ -447,6 +448,14 @@ Polymer({
 		if(this.type === Number){
 			this.set("allowedPattern", "[0-9]");
 		}
+	},
+	onOverlayOpened:function(e){
+		if(this.skipAutoFocus)
+			return
+		var input = this.$.editor.querySelector("paper-input,paper-textarea,paper-listbox,paper-radio-group");
+		if(!input)
+			return
+		input.focus();
 	},
 	init: function(){
 		if(this.__init)
