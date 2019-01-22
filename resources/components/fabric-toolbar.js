@@ -122,4 +122,4 @@ class FabricToolbar extends FabricElement(PolymerElement) {
   }
 }
 
-customElements.define(FabricToolbar.is, FabricToolbar);
+FabricToolbar.registerClass();
