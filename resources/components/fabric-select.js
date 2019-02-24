@@ -18,6 +18,7 @@ Polymer({
 				position: relative;font-size: 16px;
 				display: inline-block;box-sizing:border-box;
 				width:100%;max-width: 100%;
+				@apply --fabric-select-inner;
 			}
 			.fabric-select.tiny{width:100px}
 			.is-focused .fabric-select-label,
@@ -25,16 +26,16 @@ Polymer({
 			.has-placeholder .fabric-select-label{
 			    visibility: hidden;
 			}
-			.fabric-select--floating-label.is-focused .fabric-select-label,
-			.fabric-select--floating-label.is-dirty .fabric-select-label,
-			.fabric-select--floating-label.has-placeholder .fabric-select-label,
-			.fabric-select--floating-label.has-input .fabric-select-label{
-				color: #3f51b5;
-				font-size: 12px;
-				top: -3px;
+			:host(.fabric-select--floating-label) .is-focused .fabric-select-label,
+			:host(.fabric-select--floating-label) .is-dirty .fabric-select-label,
+			:host(.fabric-select--floating-label) .has-placeholder .fabric-select-label,
+			:host(.fabric-select--floating-label) .has-input .fabric-select-label{
+				-webkit-transform: translateY(-75%) scale(0.75);
+			    transform: translateY(-75%) scale(0.75);
+			    width: 133%;
 				visibility: visible;
 			}
-			.fabric-select--floating-label .fabric-select-label {
+			:host(.fabric-select--floating-label) .fabric-select-label {
 			    transition-duration: .2s;
 			    transition-timing-function: cubic-bezier(.4,0,.2,1);
 			}
@@ -46,12 +47,20 @@ Polymer({
 			    pointer-events: none;
 			    position: absolute;
 			    display: block;
-			    top:20px;
+			    top:25px;
 			    width: 100%;
 			    overflow: hidden;
 			    white-space: nowrap;
 			    text-align: left;
-			    padding: 5px 5px 5px;
+			    font: inherit;
+			    color: var(--paper-input-container-color, var(--secondary-text-color));
+			    -webkit-transition: -webkit-transform 0.25s, width 0.25s;
+			    transition: transform 0.25s, width 0.25s;
+			    -webkit-transform-origin: left top;
+			    transform-origin: left top;
+			    box-sizing:border-box;
+				@apply --paper-font-common-nowrap;
+			    @apply --paper-font-subhead;
 			}
 
 			.fabric-select-label.hide{display:none}
@@ -60,7 +69,7 @@ Polymer({
 			    @apply --layout-wrap;
 			    box-sizing:border-box;
 			    padding:25px 5px 5px;
-			    min-height:67px;
+			    min-height:30px;
 			    position:relative;
 			    border-bottom:1px solid #DDD;
 			    @apply --fabric-select-holder;
@@ -70,19 +79,21 @@ Polymer({
 				@apply --layout-center;
 				border:1px solid #DDD;
 				margin-right:5px;
-				margin-bottom: 5px;
+				margin-bottom:3px;
+				margin-top:4px;
 				white-space:nowrap;
 				padding:0px 5px;
 				user-select:none;
-				height:26px;
+				height:20px;
+				@apply --paper-font-subhead;
 				@apply --fabric-select-chip;
 			}
 			.fabric-select .chip .chip-action{
 				border-radius:50%;
 				border:0px;
-				background:#150101;
+				background:transparent;
 				padding:0px;
-				color:#FFF;
+				color:#150101;
 				line-height:1;
 				margin-left:5px;
 				cursor:pointer;
@@ -94,12 +105,12 @@ Polymer({
 				width:13px;height:13px;
 			}
 			.fabric-select .chip button:focus{
-				color:#FFF;
 				@apply --fabric-select-chip-action-focus;
 			}
 			.fabric-select .fabric-select-holder .chip button::-moz-focus-inner{border:0px}
 			.fabric-select-input{
 				border:0px;outline:none;padding:0px;margin:0px;position:absolute;height:1px;width:50%;
+				@apply --paper-font-subhead;
 				z-index:-1;opacity:0;
 			}
 			.fabric-select .fabric-select-holder:after{
@@ -113,7 +124,7 @@ Polymer({
 			    transition:all 0.2s ease;
 			}
 			.fabric-select.is-focused .fabric-select-holder:after{left: 0%;right: 0%;}
-			.fabric-select-list{width:100%;}
+			.fabric-select-list{width:100%;max-width:100%}
 			.fabric-select-list .item{cursor:pointer;}
 			.fabric-select-list .item:hover{background-color:#eee}
 
@@ -134,6 +145,7 @@ Polymer({
 			    min-width:50px;outline-style: none;
 			    border: 0px solid #ddd;
 			    padding:2px 5px;margin: 0px;display:inline-block;font-size:16px;height:22px;
+			    @apply --paper-font-subhead;
 			    @apply --fabric-select-input;
 			}
 			.fabric-select-inputbox:focus{outline-width: 0px;}
@@ -142,6 +154,15 @@ Polymer({
 			:host(.no-chips) .chip .chip-action{display:none;}
 			:host(.no-chips) .chip .chip-text{font-size: 16px;}
 			:host(.no-chips) .fabric-select-holder{min-height:49px}
+			:host(.fabric-select--floating-label) .fabric-select-holder{
+				margin-top:18px;
+			}
+			:host(:not(.fabric-select--floating-label)) .fabric-select-label{
+				top:0px;
+			}
+			:host(.no-chips.fabric-select--floating-label) .fabric-select-holder{
+				min-height:29px;
+			}
 			:host(.no-chips:not(.fabric-select--floating-label)) .fabric-select-holder{
 				min-height:29px;padding-top:5px
 			}
@@ -152,6 +173,10 @@ Polymer({
 			  margin:2px 4px;
 			  @apply --fabric-select-inline-item;
 			}
+			:host(.inline-list-items) .fabric-select-list paper-listbox{
+				white-space:normal;
+				@apply --fabric-select-inline-item-paper-listbox;
+			}
 			:host(.inline-list-items) .fabric-select-list .item.is-selected{background-color:#767676;color:#FFF}
 			:host(.inline-list-items) .fabric-select-list .item:hover{
 				background-color:#d2d2d2;color:rgba(0,0,0,.87);
@@ -160,6 +185,7 @@ Polymer({
 			:host(.hide-selected) .fabric-select-list .item.iron-selected{display:none;}
 		</style>
 		<div id="content" class="fabric-select">
+			<label class="fabric-select-label" hidden$="[[!label]]">[[label]]</label>
 			<div class="fabric-select-holder" id="display"></div>
 			<!--div>selected:[[selected]]</div-->
 			<paper-menu-button id="menuButton" restore-focus-on-close="[[restoreFocusOnClose]]" vertical-align="[[verticalAlign]]" opened="{{dropdownOpened}}">
@@ -171,14 +197,14 @@ Polymer({
 					<template is="dom-if" if="[[multiple]]">
 						<paper-listbox id="dropdownMenu" selected-values="{{selected}}" attr-for-selected="dataid" multi>
 							<template is="dom-repeat" items="[[listItems]]">
-								<paper-item class="item" hidden$="[[item.isHidden]]" dataid="[[getMenuItemId(item, items)]]">[[getMenuItemText(item, items)]]</paper-item>
+								<paper-item class="item" hidden$="[[item.isHidden]]" dataid$="[[getMenuItemId(item, items)]]">[[getMenuItemText(item, items)]]</paper-item>
 							</template>
 						</paper-listbox>
 					</template>
 					<template is="dom-if" if="[[!multiple]]">
 						<paper-listbox id="dropdownMenu" selected="{{selected}}" attr-for-selected="dataid">
 							<template is="dom-repeat" items="[[listItems]]">
-								<paper-item class="item" hidden$="[[item.isHidden]]" dataid="[[getMenuItemId(item, items)]]">[[getMenuItemText(item, items)]]</paper-item>
+								<paper-item class="item" hidden$="[[item.isHidden]]" dataid$="[[getMenuItemId(item, items)]]">[[getMenuItemText(item, items)]]</paper-item>
 							</template>
 						</paper-listbox>
 					</template>
@@ -189,55 +215,25 @@ Polymer({
 		</div>
 	`,
 	properties:{
-		items:{
-			type: Array,
-			value: []
-		},
-		selected:{
-			type: Array,
-			value: [],
-			notify:true
-		},
+		items:{type: Array},
+		selected:{type: Array, value: [],notify:true},
 		inputPlaceholder: String,
-		inputName:{
-			type: String,
-			value: ""
-		},
-		newPrefix: {
-			type:String,
-			value: "[n]:"
-		},
-		valueKey:{
-			type: String,
-			value: "value"
-		},
-		textKey:{
-			type: String,
-			value: "text"
-		},
+		inputName:{type: String, value: ""},
+		newPrefix: {type:String, value: "[n]:"},
+		valueKey:{type: String, value: "value"},
+		textKey:{type: String, value: "text"},
 		allowNew: Boolean,
 		required: Boolean,
-		multiple: {
-			type: Boolean,
-			value: false
-		},
+		multiple: {type: Boolean, value: false},
 		singleTimeFilter: Boolean,
 		autoClose: Boolean,
-		disableInput: {
-			type: Boolean,
-			value: false
-		},
-		listItems:{
-			type: Array,
-			value: []
-		},
-		minDropdownWidth:{
-			type: Number,
-			value: 100
-		},
+		disableInput: {type: Boolean,value: false},
+		listItems:{type: Array, value: []},
+		minDropdownWidth:{type: Number, value: 100},
 		dontCloseList:Boolean,
 		directEntry:Boolean,
-		restoreFocusOnClose:{type: Boolean, value: false}
+		restoreFocusOnClose:{type: Boolean, value: false},
+		label:String
 	},
 	observers:[
 		"onSelectedChanged(selected, selected.*)",
@@ -258,6 +254,7 @@ Polymer({
 		var width = this.getBoundingClientRect().width;
 		if(width < this.minDropdownWidth)
 			width = this.minDropdownWidth
+		//console.log("width", width)
 		this.$.dropdownContent.style.width = width+"px";
 		this.$.menuButton.$.dropdown.notifyResize();
 	},
@@ -285,6 +282,7 @@ Polymer({
 	},
 	initInput: function(){
 		var self = this;
+		this._items = this._items || {};
 		var $el = self.$el;
 
 		if(this.disableInput){
@@ -318,7 +316,7 @@ Polymer({
 			this.closeList(200);
 		})
 
-		if($el.hasClass('fabric-select--floating-label')){
+		if(!$el.hasClass('fabric-select--floating-label')){
 			self.$inputBox.attr("placeholder", this.inputPlaceholder || "");
 			return
 		}
@@ -357,6 +355,7 @@ Polymer({
 	},
 	onItemsChanged: function(){
 		this.buildList();
+		this.updateDisplay();
 	},
 	initRequiredAttr: function(){
 		var isRequired = !!this.required
@@ -586,6 +585,8 @@ Polymer({
 		this.fire("selected-changed", {selected: this.getSelected()})
 	},
 	updateDisplay: function(){
+		if(!this.$display)
+			return
 		this.$display.find(":not(input)").remove();
 		var displayItemTplFn = this.displayItemTplFn.bind(this)
 		var selected = this.getSelected();
@@ -637,18 +638,23 @@ Polymer({
 		return this._items[value]
 	},
 	buildListItems: function(){
-		var self = this;
 		this._items = {};
 		var newPrefix = this.newPrefix;
 		this.set("listItems", []);
+		var listItems = [];
 		$.each(this.items, (index, item)=>{
 			var value = item[this.valueKey];
 			this._items[value] = item;
 			if(!newPrefix || (value+"").indexOf(newPrefix) !==0)
-				this.push("listItems", item);
+				listItems.push(item);
 		});
+
+		this.set("listItems", listItems);
+		//console.log("this.selected", this.selected)
+		//console.log("listItems", this.listItems )
 	},
 	buildList: function(){
+		//console.log("buildList:this.selected", this.selected)
 		this.buildListItems();
 
 		var selectedUpdated = false;
@@ -671,6 +677,7 @@ Polymer({
 
 	},
 	openList: function(){
+		this.onWindowResize();
 		this.dropdownOpened = true;
 		if(this.setTimeoutId){
 			clearTimeout(this.setTimeoutId)
