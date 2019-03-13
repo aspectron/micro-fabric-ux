@@ -7,7 +7,7 @@
 	],
 	"extraDependencies":[
 		"node_modules/@polymer/**/*.js",
-		"node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js",
+		"node_modules/@webcomponents/**/*.js",
 		"resources/components/*.js",
 		"resources/scripts/*.js"
 	],
