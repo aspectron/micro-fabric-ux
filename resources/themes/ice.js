@@ -1,4 +1,5 @@
-
+import '@polymer/paper-styles/shadow.js';
+import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 const $_documentContainer = document.createElement('div');
 $_documentContainer.setAttribute('style', 'display: none;');
 $_documentContainer.innerHTML = `
