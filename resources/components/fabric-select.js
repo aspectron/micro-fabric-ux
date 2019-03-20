@@ -7,7 +7,7 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
 	is: "fabric-select",
 	_template: html`
-		<style>
+		<style include="fabric-style">
 			:host{display:block;}
 			.layout.vertical{@apply(--layout-vertical);}
 			.layout.horizontal{@apply(--layout-horizontal)}
@@ -149,7 +149,7 @@ Polymer({
 			    @apply --fabric-select-input;
 			}
 			.fabric-select-inputbox:focus{outline-width: 0px;}
-			.chip .chip-text{font-family: "Helvetica","Arial",sans-serif; @apply --fabric-select-chip-text;}
+			.chip .chip-text{@apply --fabric-select-chip-text;}
 			:host(.no-chips) .chip{border:0px;background-color:transparent;line-height:1;padding-left:0px;height:auto;}
 			:host(.no-chips) .chip .chip-action{display:none;}
 			:host(.no-chips) .chip .chip-text{font-size: 16px;}
