@@ -252,6 +252,7 @@ Polymer({
 			#editor::shadow paper-input.editor-error::shadow label { color: red; }
 			#paper paper-icon-button{margin-top:5px;@apply --fabric-field-paper-icon-button}
 			.dropdown-content{
+				@apply --fabric-field-dropdown-content;
 				--paper-input-container:{
 					padding-bottom:0px;
 					padding:0px;
@@ -262,6 +263,11 @@ Polymer({
 				--paper-input-container-input:{
 					padding:0px 5px;
 				}
+			}
+			.dropdown-content.h-center{
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --fabric-field-dropdown-content-h-center;
 			}
 			.spinner-slot{
 				@apply --layout-horizontal;
@@ -294,9 +300,6 @@ Polymer({
                 @apply --layout-flex;
                 @apply --fabric-field-spinner;
             }
-            #######
-            #######
-            #######
             .h-box{@apply --layout-horizontal;}
             .flex{@apply --layout-flex;}
             .select-box-outer{
@@ -372,7 +375,7 @@ Polymer({
 					</span>
 				</template>
 				<template is="dom-if" if="[[_isBoolField(format, type)]]">
-					<div slot="dropdown-content" class="dropdown-content bg-color no-overflow">
+					<div slot="dropdown-content" class="dropdown-content h-center bg-color no-overflow">
 						<paper-radio-group selected="{{_value}}" attr-for-selected="value">
 							<paper-radio-button name="a" value="1">[[getBooleanText(1)]]</paper-radio-button>
 							<paper-radio-button name="b" value="0">[[getBooleanText(0)]]</paper-radio-button>
@@ -382,7 +385,7 @@ Polymer({
 					</div>
 				</template>
 				<template is="dom-if" if="[[_isRadioField(format)]]">
-					<div slot="dropdown-content" class="dropdown-content bg-color no-overflow">
+					<div slot="dropdown-content" class="dropdown-content h-center bg-color no-overflow">
 						<paper-radio-group selected="{{_value}}" attr-for-selected="value">
 							<template is="dom-repeat" items="[[_radio]]">
 								<paper-radio-button name="[[item.name]]" value="[[item.value]]">[[item.name]]</paper-radio-button>
