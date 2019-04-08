@@ -363,7 +363,7 @@ Polymer({
 					</span>
 					<span slot="dropdown-trigger" class="dropdown-trigger">
 						<span class='value'>[[_V(value)]]</span><span class="units" hidden$="[[!showUnits]]">[[_getUnits(format)]]</span><span class="suffix" hidden$="[[!suffix]]">[[suffix]]</span>
-						<iron-icon slot="aaaa-aaa" icon="arrow-drop-down" hidden$="[[!editable]]"></iron-icon>
+						<iron-icon icon="arrow-drop-down" hidden$="[[!editable]]"></iron-icon>
 					</span>
 				</template>
 				
@@ -371,7 +371,7 @@ Polymer({
 					<span slot="dropdown-trigger" class="dropdown-trigger">
 						<span id="title" class='title'>[[title]]<span>[[titleSuffix]]</span></span>
 						<span class='value'>[[_V(value)]]</span><span class="units" hidden$="[[!showUnits]]">[[_getUnits(format)]]</span><span class="suffix" hidden$="[[!suffix]]">[[suffix]]</span>
-						<iron-icon slot="aaaa-aaa" icon="arrow-drop-down" hidden$="[[!editable]]"></iron-icon>
+						<iron-icon icon="arrow-drop-down" hidden$="[[!editable]]"></iron-icon>
 					</span>
 				</template>
 				<template is="dom-if" if="[[_isBoolField(format, type)]]">

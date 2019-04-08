@@ -85,6 +85,9 @@ Polymer({
 				padding:0px 5px;
 				user-select:none;
 				height:20px;
+				max-width:90%;
+				max-width:calc(100% - 10px);
+				overflow:hidden;
 				@apply --paper-font-subhead;
 				@apply --fabric-select-chip;
 			}
@@ -149,7 +152,7 @@ Polymer({
 			    @apply --fabric-select-input;
 			}
 			.fabric-select-inputbox:focus{outline-width: 0px;}
-			.chip .chip-text{@apply --fabric-select-chip-text;}
+			.chip .chip-text{max-width:100%;overflow:hidden;text-overflow:ellipsis;@apply --fabric-select-chip-text;}
 			:host(.no-chips) .chip{border:0px;background-color:transparent;line-height:1;padding-left:0px;height:auto;}
 			:host(.no-chips) .chip .chip-action{display:none;}
 			:host(.no-chips) .chip .chip-text{font-size: 16px;}
