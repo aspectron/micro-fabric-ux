@@ -3,16 +3,48 @@ import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-item/paper-item.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+const $_documentContainer = document.createElement('div');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `
+<dom-module id="fabric-field-style">
+	<template>
+		<style include="fabric-style">
+			:root{
+				--fabric-select-chip-style:{
+					@apply --layout-horizontal;
+					@apply --layout-center;
+					border:1px solid #DDD;
+					margin-right:5px;
+					margin-bottom:3px;
+					margin-top:4px;
+					white-space:nowrap;
+					padding:0px 5px;
+					user-select:none;
+					max-width:90%;
+					max-width:calc(100% - 10px);
+					overflow:hidden;
+					@apply --paper-font-subhead;
+					@apply --fabric-select-chip;
+				}
+			}
+		</style>
+	</template>
+</dom-module>`;
+document.head.appendChild($_documentContainer);
+
 
 Polymer({
 	is: "fabric-select",
 	_template: html`
-		<style include="fabric-style">
+		<style include="fabric-field-style">
 			:host{display:block;}
 			.layout.vertical{@apply(--layout-vertical);}
 			.layout.horizontal{@apply(--layout-horizontal)}
 			.fit{@apply(--layout-fit)}
 			.flex, .flex-1{@apply(--layout-flex)}
+			#content{line-height:0px;font-size:0px;@apply --fabric-select-content;}
+			#menuButton{padding:0px;@apply --fabric-select-menu;}
 			.fabric-select{
 				background-color:#FFF;
 				position: relative;font-size: 16px;
@@ -20,6 +52,7 @@ Polymer({
 				width:100%;max-width: 100%;
 				@apply --fabric-select-inner;
 			}
+			
 			.fabric-select.tiny{width:100px}
 			.is-focused .fabric-select-label,
 			.is-dirty .fabric-select-label,
@@ -75,21 +108,7 @@ Polymer({
 			    @apply --fabric-select-holder;
 			}
 			.fabric-select .chip{
-				@apply --layout-horizontal;
-				@apply --layout-center;
-				border:1px solid #DDD;
-				margin-right:5px;
-				margin-bottom:3px;
-				margin-top:4px;
-				white-space:nowrap;
-				padding:0px 5px;
-				user-select:none;
-				height:20px;
-				max-width:90%;
-				max-width:calc(100% - 10px);
-				overflow:hidden;
-				@apply --paper-font-subhead;
-				@apply --fabric-select-chip;
+				@apply --fabric-select-chip-style;
 			}
 			.fabric-select .chip .chip-action{
 				border-radius:50%;
@@ -120,8 +139,8 @@ Polymer({
 			    content: " ";
 			    position: absolute;
 			    bottom: -1px;
-			    left: 50%;
-			    right: 50%;
+			    left: 51%;
+			    right: 51%;
 			    background: #3f51b5;
 			    height: 2px;
 			    transition:all 0.2s ease;
@@ -190,7 +209,6 @@ Polymer({
 		<div id="content" class="fabric-select">
 			<label class="fabric-select-label" hidden$="[[!label]]">[[label]]</label>
 			<div class="fabric-select-holder" id="display"></div>
-			<!--div>selected:[[selected]]</div-->
 			<paper-menu-button id="menuButton" restore-focus-on-close="[[restoreFocusOnClose]]" vertical-align="[[verticalAlign]]" opened="{{dropdownOpened}}">
 				<span slot="dropdown-trigger" class="dropdown-trigger"></span>
 				<div slot="dropdown-content" class="dropdown-content fabric-select-list" id="dropdownContent" >
