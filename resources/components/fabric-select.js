@@ -62,7 +62,8 @@ Polymer({
 			:host(.fabric-select--floating-label) .is-focused .fabric-select-label,
 			:host(.fabric-select--floating-label) .is-dirty .fabric-select-label,
 			:host(.fabric-select--floating-label) .has-placeholder .fabric-select-label,
-			:host(.fabric-select--floating-label) .has-input .fabric-select-label{
+			:host(.fabric-select--floating-label) .has-input .fabric-select-label,
+			:host(.fabric-select--floating-label.label-floated) .fabric-select-label{
 				-webkit-transform: translateY(-75%) scale(0.75);
 			    transform: translateY(-75%) scale(0.75);
 			    width: 133%;
@@ -254,7 +255,8 @@ Polymer({
 		dontCloseList:Boolean,
 		directEntry:Boolean,
 		restoreFocusOnClose:{type: Boolean, value: false},
-		label:String
+		label:String,
+		filterMethod:{type: String, value: "contain"}
 	},
 	observers:[
 		"onSelectedChanged(selected, selected.*)",
@@ -538,10 +540,17 @@ Polymer({
 
 		value = value.toLowerCase();
 
-		_.each(this.listItems, (item, index)=>{
-			var hide = item[this.textKey].toLowerCase().indexOf(value) !== 0;
-			this.set("listItems."+index+".isHidden", hide);
-		})
+		if(this.filterMethod == "start"){
+			_.each(this.listItems, (item, index)=>{
+				var hide = item[this.textKey].toLowerCase().indexOf(value) !== 0;
+				this.set("listItems."+index+".isHidden", hide);
+			})
+		}else{
+			_.each(this.listItems, (item, index)=>{
+				var hide = item[this.textKey].toLowerCase().indexOf(value) < 0;
+				this.set("listItems."+index+".isHidden", hide);
+			})
+		}
 	},
 	removeLastTag: function(){
 		var selected = this.getSelected();
