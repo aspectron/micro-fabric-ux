@@ -228,7 +228,7 @@ Polymer({
 				}
 			}
 			.wrapper {
-				padding: 4px 6px 4px 6px; font-size: 14px; white-space: nowrap;
+				padding: 4px 6px 4px 6px; font-size:0px; white-space: nowrap;
 				@apply --fabric-field-wrapper;
 			}
 			.dropdown-trigger{
@@ -237,7 +237,7 @@ Polymer({
 				@apply --fabric-field-trigger;
 			}
 			.title { font-size: 14px; @apply --fabric-field-title;}
-			.value { color: #025975; @apply --fabric-field-value;}
+			.value { font-size: 12px; color: #025975; @apply --fabric-field-value;}
 			.suffix { color: #025975; padding-left:5px; @apply --fabric-field-suffix;}
 			.dropdown-trigger iron-icon{width: 12px; height: 12px;@apply --fabric-field-icon;}
 			fabric-overlay-field{padding-bottom:0px;}
@@ -767,9 +767,12 @@ Polymer({
 		}
 
 		if(this.localSave){
-			this.set("value", value);
-			this.fire(this.is+"-value-changed", {value: value, editable:this.editable, field: this});
-			this.fire("change", {value: value, editable:this.editable, field: this})
+			if(this.value !== value){
+				this.set("value", value);
+				this.fire(this.is+"-value-changed", {value: value, editable:this.editable, field: this});
+				this.fire("change", {value: value, editable:this.editable, field: this})
+				this.fire("changed", {value: value, editable:this.editable, field: this})
+			}
 			this.$.editor.close();
 			return
 		}
@@ -803,3 +806,4 @@ Polymer({
 		})
 	}
 })
+
