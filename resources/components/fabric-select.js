@@ -38,6 +38,47 @@ Polymer({
 	is: "fabric-select",
 	_template: html`
 		<style include="fabric-field-style">
+
+			:host(.as-fabric-field){
+				--fabric-select-holder:{
+					border-bottom:0px;
+					min-height:0px;
+					padding:0px;
+				}
+				--fabric-select-holder-after:{display:none}
+				--fabric-select-display-suffix:{
+					display:block;
+				}
+				--fabric-select-chip:{
+					border:0px;
+					padding-right:1px;
+					margin-right:1px;
+					max-width:unset !important;
+				}
+				--fabric-select-chip-action:{
+					display:none
+				}
+				--fabric-select-chip-text:{
+					text-overflow:unset;
+					font-size:12px;line-height:1.2;
+					color: #025975;
+					display:inline;
+					width:auto;
+					overflow:unset;
+					max-width:unset;
+					-webkit-font-smoothing:auto;
+				}
+				--fabric-select-inner:{
+					@apply --layout-horizontal;
+					@apply --layout-center;
+					background-color:transparent;
+				}
+				--fabric-select-label:{position:relative;flex:unset;width:auto;left:0px;font-size:14px;}
+				--fabric-select-inactive-label:{visibility:visible}
+				--fabric-select-menu:{position:absolute;left:0px;top:25px;}
+			}
+
+
 			:host{display:block;}
 			.layout.vertical{@apply(--layout-vertical);}
 			.layout.horizontal{@apply(--layout-horizontal)}
@@ -58,6 +99,7 @@ Polymer({
 			.is-dirty .fabric-select-label,
 			.has-placeholder .fabric-select-label{
 			    visibility: hidden;
+			    @apply --fabric-select-inactive-label;
 			}
 			:host(.fabric-select--floating-label) .is-focused .fabric-select-label,
 			:host(.fabric-select--floating-label) .is-dirty .fabric-select-label,
@@ -95,6 +137,7 @@ Polymer({
 			    box-sizing:border-box;
 				@apply --paper-font-common-nowrap;
 			    @apply --paper-font-subhead;
+			    @apply --fabric-select-label;
 			}
 
 			.fabric-select-label.hide{display:none}
@@ -110,6 +153,14 @@ Polymer({
 			}
 			.fabric-select .chip{
 				@apply --fabric-select-chip-style;
+				@apply --fabric-select-chip;
+				
+			}
+			:host(.as-fabric-field) .fabric-select .chip{
+				max-width:unset !important;
+			}
+			:host(:not(.as-fabric-field)) .fabric-select .fabric-select-holder{
+				width:100%;
 			}
 			.fabric-select .chip .chip-action{
 				border-radius:50%;
@@ -145,9 +196,13 @@ Polymer({
 			    background: #3f51b5;
 			    height: 2px;
 			    transition:all 0.2s ease;
+			    @apply --fabric-select-holder-after;
 			}
-			.fabric-select.is-focused .fabric-select-holder:after{left: 0%;right: 0%;}
-			.fabric-select-list{width:100%;max-width:100%}
+			.fabric-select.is-focused .fabric-select-holder:after{
+				left: 0%;right: 0%;
+				@apply --fabric-select-focus-holder-after;
+			}
+			.fabric-select-list{width:100%;max-width:100%;@apply --fabric-select-list;}
 			.fabric-select-list .item{cursor:pointer;}
 			.fabric-select-list .item:hover{background-color:#eee}
 
@@ -175,7 +230,7 @@ Polymer({
 			.chip .chip-text{max-width:100%;overflow:hidden;text-overflow:ellipsis;@apply --fabric-select-chip-text;}
 			:host(.no-chips) .chip{border:0px;background-color:transparent;line-height:1;padding-left:0px;height:auto;}
 			:host(.no-chips) .chip .chip-action{display:none;}
-			:host(.no-chips) .chip .chip-text{font-size: 16px;}
+			:host(.no-chips) .chip .chip-text{font-size: 16px;@apply --fabric-select-no-chips-chip-text;}
 			:host(.no-chips) .fabric-select-holder{min-height:49px}
 			:host(.fabric-select--floating-label) .fabric-select-holder{
 				margin-top:18px;
@@ -206,10 +261,17 @@ Polymer({
 			}
 			:host(.inline-list-items) #dropdownContent{padding:0px 0px;min-height:100px}
 			:host(.hide-selected) .fabric-select-list .item.iron-selected{display:none;}
+			.display-suffix{display:none;@apply --fabric-select-display-suffix}
+			.display-suffix iron-icon{width:12px;height:12px;@apply --fabric-select-display-suffix-icon}
+			.fabric-select-holder-outer{@apply --layout-horizontal;@apply --layout-center;}
 		</style>
 		<div id="content" class="fabric-select">
 			<label class="fabric-select-label" hidden$="[[!label]]">[[label]]</label>
-			<div class="fabric-select-holder" id="display"></div>
+			<div class="fabric-select-holder-outer">
+				<div class="fabric-select-holder" id="display"></div><div
+				class="display-suffix" on-click="onDisplayClick"><iron-icon 
+				icon="[[displaySuffixIcon]]"></iron-icon></div>
+			</div>
 			<paper-menu-button id="menuButton" restore-focus-on-close="[[restoreFocusOnClose]]" vertical-align="[[verticalAlign]]" opened="{{dropdownOpened}}">
 				<span slot="dropdown-trigger" class="dropdown-trigger"></span>
 				<div slot="dropdown-content" class="dropdown-content fabric-select-list" id="dropdownContent" >
@@ -256,7 +318,8 @@ Polymer({
 		directEntry:Boolean,
 		restoreFocusOnClose:{type: Boolean, value: false},
 		label:String,
-		filterMethod:{type: String, value: "contain"}
+		filterMethod:{type: String, value: "contain"},
+		displaySuffixIcon:{type:String, value:"arrow-drop-down"}
 	},
 	observers:[
 		"onSelectedChanged(selected, selected.*)",
