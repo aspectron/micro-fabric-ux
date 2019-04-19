@@ -52,7 +52,7 @@ class FabricOverlayField extends FabricElement(PolymerElement) {
 	static get template() {
     	return html`
 			<style include="fabric-style paper-material-styles">
-				:host {display: inline-block;position: relative;padding-bottom: 2px;}
+				:host{display:inline-block;position:relative;padding-bottom:2px;@apply --fabric-overlay-field}
 				:host([block]){display: block;}
 				.tigger{
 					min-height: 20px;
@@ -121,7 +121,8 @@ class FabricOverlayField extends FabricElement(PolymerElement) {
 
 		if(this.adjustRightEdge){
 			var maxRight = window.innerWidth-20;
-			var right = this.$.dropdown.getBoundingClientRect().left + dropdownBox.width - this.$.dropdown.horizontalOffset;
+			var right = this.$.dropdown.getBoundingClientRect().left +
+				dropdownBox.width - this.$.dropdown.horizontalOffset;
 			//console.log("right:"+right, "maxRight:"+maxRight+", (maxRight - right):"+(maxRight - right))
 			if (right > maxRight || right == maxRight)
 				this.$.dropdown.horizontalOffset = maxRight - right;
