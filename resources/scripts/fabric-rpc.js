@@ -23,7 +23,6 @@ class FabricRPC {
 
     initEvent() {
         this.pending = { };
-        this._req = 1;
         this.events = new FabricEvents();
     }
 
@@ -46,7 +45,7 @@ class FabricRPC {
         })
         this.socket.on('error', (err)=>{ 
             console.log("RPC error", arguments);
-        	this.events.emit('rpc-error', err);
+            this.events.emit('rpc-error', err);
         })
         this.socket.on('offline', ()=>{
             //window.location.reload();
@@ -55,7 +54,7 @@ class FabricRPC {
         this.socket.on('disconnect', ()=>{ 
             this.online = false;
             console.log("RPC disconnected",arguments);
-   			this.events.emit('rpc-disconnect');
+            this.events.emit('rpc-disconnect');
 
             _.each(this.pending, function(info, id) {
                 info.callback({ error : "Connection Closed"});
@@ -64,32 +63,40 @@ class FabricRPC {
             this.pending = { }
         })
 
+        /*
         this.socket.on('user-login', (msg)=>{
             //window.location.reload();
         })
         this.socket.on('user-logout', (msg)=>{
             //window.location.reload();
         })
+        */
 
         this.socket.on('message', (msg)=>{
+            let {subject, data} = msg;
+            if(msg.op){
+                subject = msg.op;
+                data = msg;
+            }
             if(this.trace) {
                 if(this.trace === 1 || this.trace === true)
-                    console.log('RPC ['+this.id+']:',msg.op);
+                    console.log('RPC ['+this.id+']:', subject);
                 else
                 if(this.trace === 2)
-                    console.log('RPC ['+this.id+']:',msg.op,msg);                
+                    console.log('RPC ['+this.id+']:',subject, data);                
             }
-        	this.events.emit(msg.op, msg);
+            this.events.emit(subject, data);
         })
 
         this.socket.on('rpc::response', (msg)=>{
-            if(msg._resp && this.pending[msg._resp])
-                this.pending[msg._resp].callback.call(this, msg.err, msg.resp);
+            let {rid, error, data} = msg;
+            if(rid && this.pending[rid])
+                this.pending[rid].callback.call(this, error, data);
             else
-            if(!this.pending[msg._resp]) {
+            if(!this.pending[rid]) {
                 console.log("RPC received unknown rpc callback (strange server-side retransmit?)");
             }
-            delete this.pending[msg._resp];
+            delete this.pending[rid];
         })
 
         var timeoutMonitor = ()=>{
@@ -118,12 +125,23 @@ class FabricRPC {
         this.events.on(op, callback);
     }
 
-    dispatch(msg, callback) {
+    dispatch(subject, data, callback) {
+        if(subject.op){//<-- old way
+            callback = data;
+            data = subject;
+            subject = subject.op;
+        }else{
+            if(typeof(data) == 'function') {
+                callback = data;
+                data = undefined;
+            }
+        }
 
         if(!callback)
-            return this.socket.emit('message', msg);
+            return this.socket.emit('message', {subject, data});
 
-        this.pending[this._req] = {
+        let rid = Date.now()+":"+Math.ceil(Math.random()*1e16)
+        this.pending[rid] = {
             ts : Date.now(),
             callback : (err, resp)=>{
                 callback(err, resp);
@@ -131,11 +149,9 @@ class FabricRPC {
         }
 
         this.socket.emit('rpc::request', { 
-            req : msg,
-            _req : this._req,
+            rid,
+            req : {subject, data}
         });
-
-        this._req++;
     }
 }
 
