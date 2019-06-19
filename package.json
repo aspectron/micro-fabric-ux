@@ -12,6 +12,7 @@
     "@polymer/paper-dialog": "*",
     "@polymer/paper-dialog-scrollable": "*",
     "@polymer/paper-radio-group": "*",
+    "@polymer/paper-toggle-button": "*",
     "@polymer/paper-drawer-panel": "*",
     "@polymer/paper-icon-button": "*",
     "@polymer/paper-fab": "*",
