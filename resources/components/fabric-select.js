@@ -226,6 +226,9 @@ Polymer({
 			    @apply --paper-font-subhead;
 			    @apply --fabric-select-input;
 			}
+			.fabric-select-inputbox::-webkit-input-placeholder{
+				@apply --fabric-select-input-placeholder;
+			}
 			.fabric-select-inputbox:focus{outline-width: 0px;}
 			.chip .chip-text{max-width:100%;overflow:hidden;text-overflow:ellipsis;@apply --fabric-select-chip-text;}
 			:host(.no-chips) .chip{border:0px;background-color:transparent;line-height:1;padding-left:0px;height:auto;}
