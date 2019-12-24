@@ -673,12 +673,20 @@ Polymer({
 		else
 			this.selected = selected.length? selected[0] : "";
 	},
-	onSelectedChanged:function(){
+	onSelectedChanged:function(e, _path){
+
 		if(!this.$input)
 			return
-		this.$input.val(this.getSelected().join(",")).trigger("change").trigger("changed")
+		//console.log("_path", _path)
 		this.updateDisplay();
-		this.fire("selected-changed", {selected: this.getSelected()})
+		var selected = this.getSelected();
+		var newValue = selected.join(",");
+		if(_path.base+"" != _path.value+"" && newValue!=this.$input.val()){
+			//console.log("newValue", newValue, this.$input.val())
+			this.$input.val(newValue).trigger("change").trigger("changed")
+			this.fire("selected-changed", {selected: selected});
+			this.fire("selection-changed", {selected: selected})
+		}
 	},
 	updateDisplay: function(){
 		if(!this.$display)

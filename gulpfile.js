@@ -13,6 +13,7 @@
 //const del = require('del');
 const fse = require('fs-extra');
 const gulp = require('gulp');
+const { src, dest, parallel, series } = gulp;
 const gulpif = require('gulp-if');
 const mergeStream = require('merge-stream');
 const polymerBuild = require('polymer-build');
@@ -48,17 +49,19 @@ function waitFor(stream) {
 }
 
 
-gulp.task('cleandir', function(callback){
-  fse.emptyDir(buildDirectory, (err) => {
-    if(err) {
-      console.log(err);
-      return callback(err);
-    }
-    callback();
+let cleandir = ()=>{
+  return new Promise((resolve, reject) => {
+    fse.emptyDir(buildDirectory, (err) => {
+      if(err) {
+        console.log(err);
+        return reject(err);
+      }
+      resolve();
+    })
   })
-});
+}
 
-gulp.task('build', ["cleandir"], function(){
+let build = ()=>{
 
   // Lets create some inline code splitters in case you need them later in your build.
   let sourcesStreamSplitter = new polymerBuild.HtmlSplitter();
@@ -123,13 +126,12 @@ gulp.task('build', ["cleandir"], function(){
   //buildStream = buildStream.pipe(polymerProject.addPushManifest());
 
   // Okay, time to pipe to the build directory
-  buildStream = buildStream.pipe(gulp.dest(buildDirectory));
+  return buildStream.pipe(gulp.dest(buildDirectory));
+}
 
-  // waitFor the buildStream to complete
-  return waitFor(buildStream);
-});
+let defaultTask = series(cleandir, build);
 
-
+module.exports.default = defaultTask;
 
 /*
 function build() {
