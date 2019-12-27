@@ -97,6 +97,23 @@ var FabricElement = (superClass) => class extends superClass{
 		args.unshift(this.constructor.is+"::");
 		console.log.apply(console, args);
 	}
+	debounce(key, fn, delay){
+		this.__debounce = this.__debounce || {};
+		if(this.__debounce[key])
+			this.__debounce[key].cancel();
+		this.__debounce[key] = {
+			handle:window.setTimeout(fn, delay||0),
+			cancel(){
+				if(!this.handle)
+					return false
+				window.clearTimeout(this.handle);
+				this.handle = null;
+				return true;
+			}
+		}
+
+		return this.__debounce[key]
+	}
 
 }
 
