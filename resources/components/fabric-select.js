@@ -115,6 +115,7 @@ Polymer({
 			    transition-duration: .2s;
 			    transition-timing-function: cubic-bezier(.4,0,.2,1);
 			}
+			:host([disabled]){cursor:default}
 			.fabric-select-label {
 			    color: rgba(0,0,0,.26);
 			    font-size: 16px;
@@ -175,6 +176,9 @@ Polymer({
     			height: 17px;
     			@apply --fabric-select-chip-action;
 			}
+			:host([disabled]) .fabric-select .chip .chip-action{
+				cursor:default
+			}
 			.fabric-select .chip .chip-action iron-icon{
 				width:13px;height:13px;
 			}
@@ -204,6 +208,7 @@ Polymer({
 			}
 			.fabric-select-list{width:100%;max-width:100%;@apply --fabric-select-list;}
 			.fabric-select-list .item{cursor:pointer;}
+			:host([disabled]) .fabric-select-list .item{cursor:default;}
 			.fabric-select-list .item:hover{background-color:#eee}
 
 			.fabric-select-inputbox{
@@ -297,7 +302,7 @@ Polymer({
 					</template>
 				</div>
 			</paper-menu-button>
-			<input class="fabric-select-input" name$="[[_inputName(this.inputName)]]" />
+			<input class="fabric-select-input" name$="[[_inputName(this.inputName)]]" disabled$="[[disabled]]" />
 			<a id="focusEl"></a>
 		</div>
 	`,
@@ -322,7 +327,8 @@ Polymer({
 		restoreFocusOnClose:{type: Boolean, value: false},
 		label:String,
 		filterMethod:{type: String, value: "contain"},
-		displaySuffixIcon:{type:String, value:"arrow-drop-down"}
+		displaySuffixIcon:{type:String, value:"arrow-drop-down"},
+		disabled:{type:Boolean, reflectToAttribute:true, observer:"onDisabledChange"}
 	},
 	observers:[
 		"onSelectedChanged(selected, selected.*)",
@@ -369,6 +375,12 @@ Polymer({
 		    '</button>'+
 		'</span>'
 	},
+	onDisabledChange:function(){
+		if(!this.$inputBox)
+			return
+
+		this.$inputBox.attr("disabled", this.disabled ? true : null)
+	},
 	initInput: function(){
 		var self = this;
 		this._items = this._items || {};
@@ -384,6 +396,7 @@ Polymer({
 			return;
 
 		self.$inputBox = $('<input class="fabric-select-inputbox" name="" />');
+		this.onDisabledChange();
 		self.$display.append(self.$inputBox);
 		$el.addClass("has-input");
 		self.$input.attr("tabindex", "-1");
@@ -483,9 +496,13 @@ Polymer({
 
 	},
 	onInputFocus: function(){
+		if(this.disabled)
+			return
 		this.openList()
 	},
 	onDisplayClick: function(e, $el){
+		if(this.disabled)
+			return
 		e.preventDefault();
 		e.stopPropagation();
 		var $btn = $(e.target).closest(".delete-btn", 5);
