@@ -33,7 +33,6 @@ $_documentContainer.innerHTML = `
 </dom-module>`;
 document.head.appendChild($_documentContainer);
 
-
 Polymer({
 	is: "fabric-select",
 	_template: html`
@@ -476,6 +475,7 @@ Polymer({
 	onHiddenInputKeyDown: function(e){
 		if(e.which == 9){//if tab, shift+tab
 			this.$el.removeClass("is-focused")
+			$(this).removeClass("is-focused")
 			return
 		}
 		if(this.$inputBox){
@@ -825,5 +825,7 @@ Polymer({
 		if(!hasFocus && this.$inputBox)
 			hasFocus = this.$inputBox.is(":focus");
 		this.$el.toggleClass("is-focused", hasFocus);
+		$(this).toggleClass("is-focused", hasFocus);
 	}
 });
+
