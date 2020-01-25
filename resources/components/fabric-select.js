@@ -287,14 +287,14 @@ Polymer({
 					</template>
 					<template is="dom-if" if="[[multiple]]">
 						<paper-listbox id="dropdownMenu" selected-values="{{selected}}" attr-for-selected="dataid" multi>
-							<template is="dom-repeat" items="[[listItems]]">
+							<template is="dom-repeat" items="[[listItems]]" filter="[[pickerFilter]]">
 								<paper-item class="item" hidden$="[[item.isHidden]]" dataid$="[[getMenuItemId(item, items)]]">[[getMenuItemText(item, items)]]</paper-item>
 							</template>
 						</paper-listbox>
 					</template>
 					<template is="dom-if" if="[[!multiple]]">
 						<paper-listbox id="dropdownMenu" selected="{{selected}}" attr-for-selected="dataid">
-							<template is="dom-repeat" items="[[listItems]]">
+							<template is="dom-repeat" items="[[listItems]]" filter="[[pickerFilter]]">
 								<paper-item class="item" hidden$="[[item.isHidden]]" dataid$="[[getMenuItemId(item, items)]]">[[getMenuItemText(item, items)]]</paper-item>
 							</template>
 						</paper-listbox>
@@ -327,7 +327,8 @@ Polymer({
 		label:String,
 		filterMethod:{type: String, value: "contain"},
 		displaySuffixIcon:{type:String, value:"arrow-drop-down"},
-		disabled:{type:Boolean, reflectToAttribute:true, observer:"onDisabledChange"}
+		disabled:{type:Boolean, reflectToAttribute:true, observer:"onDisabledChange"},
+		pickerFilter:{type:Function, value:null}
 	},
 	observers:[
 		"onSelectedChanged(selected, selected.*)",
@@ -828,4 +829,3 @@ Polymer({
 		$(this).toggleClass("is-focused", hasFocus);
 	}
 });
-
