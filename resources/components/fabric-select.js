@@ -270,7 +270,10 @@ Polymer({
 			:host(.hide-selected) .fabric-select-list .item.iron-selected{display:none;}
 			.display-suffix{display:none;@apply --fabric-select-display-suffix}
 			.display-suffix iron-icon{width:12px;height:12px;@apply --fabric-select-display-suffix-icon}
-			.fabric-select-holder-outer{@apply --layout-horizontal;@apply --layout-center;}
+			.fabric-select-holder-outer{
+				@apply --layout-horizontal;@apply --layout-center;
+				@apply --fabric-select-holder-outer;
+			}
 		</style>
 		<div id="content" class="fabric-select">
 			<label class="fabric-select-label" hidden$="[[!label]]">[[label]]</label>
