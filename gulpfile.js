@@ -107,7 +107,7 @@ let build = ()=>{
   let buildStream = mergeStream(sourcesStream, dependenciesStream)
     .on('data', (e, d) => {
       //console.log("e.dirname", e.isBuffer())
-      if(/(png|gif|jpg|svg)$/.test(e.path.split(".").pop()))
+      if(/(png|gif|jpg|svg|map)$/.test(e.path.split(".").pop()))
         return
       var c = e.contents+"";
       c = c.replace(/'@polymer/g, "'"+basePath+"@polymer").replace(/"@polymer/g, '"'+basePath+'@polymer')

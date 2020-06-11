@@ -3,11 +3,18 @@
 	"moduleResolution": "node",
 	"sources":[
 		"modules/**/*.png",
-		"modules/**/*.jpg"
+		"modules/**/*.jpg",
+		"modules/**/*.map",
+		"modules/**/*.gif",
+		"modules/**/*.jpeg"
 	],
 	"extraDependencies":[
+		"node_modules/@polymer/**/*.map",
+		"node_modules/@webcomponents/**/*.map",
+		"node_modules/web-animations-js/**/*.map",
 		"node_modules/@polymer/**/*.js",
 		"node_modules/@webcomponents/**/*.js",
+		"node_modules/web-animations-js/**/*.js",
 		"resources/components/*.js",
 		"resources/scripts/*.js"
 	],
