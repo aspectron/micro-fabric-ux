@@ -245,6 +245,9 @@ Polymer({
 			:host(:not(.fabric-select--floating-label)) .fabric-select-label{
 				top:0px;
 			}
+			:host(:not(.fabric-select--floating-label).no-chips) .fabric-select-label{
+				top:5px;
+			}
 			:host(.no-chips.fabric-select--floating-label) .fabric-select-holder{
 				min-height:29px;
 			}
