@@ -334,7 +334,8 @@ Polymer({
 		filterMethod:{type: String, value: "contain"},
 		displaySuffixIcon:{type:String, value:"arrow-drop-down"},
 		disabled:{type:Boolean, reflectToAttribute:true, observer:"onDisabledChange"},
-		pickerFilter:{type:Function, value:null}
+		pickerFilter:{type:Function, value:null},
+		dontRemoveMissing:{type:Boolean}
 	},
 	observers:[
 		"onSelectedChanged(selected, selected.*)",
@@ -792,7 +793,7 @@ Polymer({
 				selected[selected.length] = v;
 				return;
 			}
-			if(!this._items[v]){
+			if(!this.dontRemoveMissing && !this._items[v]){
 				selectedUpdated = true;
 			}else{
 				selected[selected.length] = v;
